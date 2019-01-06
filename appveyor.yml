@@ -1,7 +1,7 @@
 version: 0.1.0-alpha.{build}
 environment:
   CODECOV_TOKEN:
-    secure: 7NwrC2/LQuGJujoTjelIGViuqX1kXSEuuJh3ZP5WKAMC93tBNp7AmUo18KBCcRLO
+    secure: LFOfxjROaaSu0UJ8zNhwsVp5jyLiMPCtoa56HONs3z/uXtjPlrNOSlQXBFAjjGLp
 skip_branch_with_pr: true
 image: Visual Studio 2017
 configuration: Release
@@ -19,18 +19,18 @@ test_script:
 
 artifacts:
 - path: src\**\release\*.nupkg
-deploy:
-- provider: NuGet
-  api_key:
-    secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
-  skip_symbols: true
-  on:
-    appveyor_repo_tag: true
-    appveyor_repo_tag_name: /\d+\.\d+.\d+(-[a-zA-Z0-9]+)?/
-- provider: NuGet
-  api_key:
-    secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
-  skip_symbols: true
-  on:
-    branch: master
-    appveyor_repo_tag: false
+# deploy:
+# - provider: NuGet
+#   api_key:
+#     secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
+#   skip_symbols: true
+#   on:
+#     appveyor_repo_tag: true
+#     appveyor_repo_tag_name: /\d+\.\d+.\d+(-[a-zA-Z0-9]+)?/
+# - provider: NuGet
+#   api_key:
+#     secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
+#   skip_symbols: true
+#   on:
+#     branch: master
+#     appveyor_repo_tag: false
