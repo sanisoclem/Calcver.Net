@@ -1,0 +1,18 @@
+<Project>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+   <PropertyGroup>
+    <PackageVersion>0.0.0-dev</PackageVersion>
+    <Authors>Jerahmeel Cosinas</Authors>
+    <Description>Automatic versions using conventional commits and semver2.0</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>versioning, semver, conventional commits</PackageTags>
+    <PackageLicenseUrl>https://github.com/organizations/PotatoEngineering/Calver.Net/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/organizations/PotatoEngineering/Calver.Net</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/organizations/PotatoEngineering/Calver.Net/releases</PackageReleaseNotes>
+  </PropertyGroup>
+</Project>
