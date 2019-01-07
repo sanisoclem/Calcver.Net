@@ -21,8 +21,7 @@ namespace Calcver
             var includedCommits = repo.GetCommits(lastTag?.Name).ToList();
 
             if (includedCommits.Count == 0) {
-                lastStableVersion.Metadata = lastTag?.Commit;
-                return lastStableVersion;
+                return new SemanticVersion(lastStableVersion.Major, lastStableVersion.Minor, lastStableVersion.Patch, lastStableVersion.Prerelease, lastTag?.Commit);
             }
             else {
                 return lastStableVersion.CalculatePrereleaseVersion(includedCommits, settings?.PrereleaseSuffix);
@@ -109,19 +108,17 @@ namespace Calcver
                 }
             }
 
-            if (major)
-                retval.BumpMajor();
-            else if (minor)
-                retval.BumpMinor();
-            else
-                retval.BumpPatch();
-
-            retval.Metadata = commits.Last().Id;
-            retval.Prerelease = $"{commits.Count}";
+            var metadata = commits.Last().Id;
+            var prerelease = $"{commits.Count}";
             if (buildNumber != null)
-                retval.Prerelease += $".{buildNumber}";
+                prerelease += $".{buildNumber}";
 
-            return retval;
+            if (major)
+                return retval.BumpMajor(prerelease,metadata);
+            else if (minor)
+                return retval.BumpMinor(prerelease, metadata);
+            
+            return retval.BumpPatch(prerelease, metadata);
         }
     }
 }

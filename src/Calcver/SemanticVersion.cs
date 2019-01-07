@@ -6,6 +6,7 @@ namespace Calcver
 {
     public class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
     {
+        readonly string _toString;
         public SemanticVersion(int major, int minor, int patch,
                     string preRelease = null, string meta = null) {
             Major = major;
@@ -13,43 +14,36 @@ namespace Calcver
             Patch = patch;
             Prerelease = preRelease;
             Metadata = meta;
+
+            _toString = $"{Major}.{Minor}.{Patch}";
+            if (Prerelease != null)
+                _toString += $"-{Prerelease}";
+            if (Metadata != null)
+                _toString += $"+{Metadata}";
         }
 
-        public int Major { get; set; }
-        public int Minor { get; set; }
-        public int Patch { get; set; }
-        public string Prerelease { get; set; }
-        public string Metadata { get; set; }
+        public int Major { get; }
+        public int Minor { get; }
+        public int Patch { get; }
+        public string Prerelease { get; }
+        public string Metadata { get; }
 
         public SemanticVersion GetBaseVersion()
             => new SemanticVersion(Major, Minor, Patch);
-        public override string ToString() {
-            var retval = $"{Major}.{Minor}.{Patch}";
-            if (Prerelease != null)
-                retval += $"-{Prerelease}";
-            if (Metadata != null)
-                retval += $"+{Metadata}";
-            return retval;
-        }
 
-        public void BumpMajor() {
-            Major += 1;
-            Minor = 0;
-            Patch = 0;
-        }
-        public void BumpMinor() {
-            Minor += 1;
-            Patch = 0;
-        }
-        public void BumpPatch() {
-            Patch += 1;
-        }
+        public SemanticVersion BumpMajor(string prerelease = null, string metadata = null)
+            => new SemanticVersion(Major + 1, 0, 0, prerelease, metadata);
+
+        public SemanticVersion BumpMinor(string prerelease = null, string metadata = null)
+            => new SemanticVersion(Major, Minor + 1, 0, prerelease, metadata);
+
+        public SemanticVersion BumpPatch(string prerelease = null, string metadata = null)
+            => new SemanticVersion(Major, Minor, Patch + 1, prerelease, metadata);
+
+        public override string ToString()
+            => _toString;
 
         public override int GetHashCode() {
-            // The build version isn't included when calculating the hash,
-            // as two versions with equal properties except for the build
-            // are considered equal.
-
             unchecked  // Allow integer overflow with wrapping
             {
                 int hash = 17;
@@ -86,7 +80,8 @@ namespace Calcver
             }
             else if (Prerelease != null) {
                 yield return -1;
-            } else if (other.Prerelease != null) {
+            }
+            else if (other.Prerelease != null) {
                 yield return 1;
             }
         }
