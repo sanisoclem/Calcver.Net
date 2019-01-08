@@ -34,9 +34,9 @@ namespace Calcver
             if (!match.Success)
                 return false;
 
-            var major = Int32.Parse(match.Groups[1].Value);
-            var minor = Int32.Parse(match.Groups[2].Value);
-            var patch = Int32.Parse(match.Groups[3].Value);
+            var major = int.Parse(match.Groups[1].Value);
+            var minor = int.Parse(match.Groups[2].Value);
+            var patch = int.Parse(match.Groups[3].Value);
             string pre = null, meta = null;
 
             if (match.Groups[4].Success) {
