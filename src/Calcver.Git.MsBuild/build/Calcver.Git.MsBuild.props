@@ -1,0 +1,17 @@
+﻿<Project TreatAsLocalProperty="TaskFolder;TaskAssembly">
+  <PropertyGroup>
+    <CalcverGit_RepositoryPath Condition="'$(CalcverGit_RepositoryPath)'==''">$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))</CalcverGit_RepositoryPath>
+    <!--<CalcverGit_PrerelaseSuffix Condition="'$(CalcverGit_PrerelaseSuffix)'==''"></CalcverGit_PrerelaseSuffix>-->
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0-test</Version>
+    <!-- dont care about multi targeting for now -->
+    <_CalcverGit_TaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' And '$(_CalcverGit_TaskFolder)' == ''">netcoreapp2.0</_CalcverGit_TaskFolder>
+    <_CalcverGit_TaskAssembly Condition=" '$(_CalcverGit_TaskAssembly)' == '' ">$(MSBuildThisFileDirectory)..\tasks\$(_CalcverGit_TaskFolder)\Calcver.Git.dll</_CalcverGit_TaskAssembly>
+    <_CalcverGit_PropsImported Condition="'$(_CalcverGit_PropsImported)'==''">true</_CalcverGit_PropsImported>
+  </PropertyGroup>
+
+  <Import Project="Calcver.Git.MsBuild.tasks"/>
+
+</Project>

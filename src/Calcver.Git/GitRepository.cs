@@ -10,7 +10,7 @@ namespace Calcver.Git
         Repository _repo;
 
         public GitRepository(string path) {
-            _repo = new Repository(path);
+            _repo = new Repository(Repository.Discover(path));
         }
 
         public IEnumerable<CommitInfo> GetCommits(string since = null, string until = null) {

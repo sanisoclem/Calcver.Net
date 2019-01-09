@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Calcver.Git.Cli": {
+      "commandName": "Project",
+      "commandLineArgs": "log"
+    }
+  }
+}

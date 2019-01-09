@@ -6,6 +6,7 @@ using System.Text;
 
 namespace Calcver.Git.MsBuild
 {
+    // -- TODO: INVOKE CLI TO PREVENT DEPENDENCY HELL
     public class GitCalcverTask : Task
     {
         [Output]

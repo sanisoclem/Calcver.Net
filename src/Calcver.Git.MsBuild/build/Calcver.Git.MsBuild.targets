@@ -1,0 +1,30 @@
+﻿<Project>
+
+  <Import Project="Calcver.Git.MsBuild.props" Condition="'$(_CalcverGit_PropsImported)'==''"/>
+
+  <PropertyGroup>
+    <BuildDependsOn>
+      BeforeCalcver;
+      CalculateProjectVersion;
+      AfterCalcver;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+
+  <Target Name="CalculateProjectVersion" DependsOnTargets="BeforeCalcver">
+    <Message Text="Calculating Version" Importance="high" />
+    <GitCalcverTask  RepositoryPath="$(CalcverGit_RepositoryPath)" PrerelaseSuffix="$(CalcverGit_PrerelaseSuffix)">
+
+      <Output TaskParameter="CalculatedVersion" ItemName="Version" />
+    </GitCalcverTask>
+    <Message Text="Calculated Version: $(CalculatedVersion)" Importance="high" />
+  </Target>
+
+  <Target Name="BeforeCalcver">
+    <Message Text="Calculating Version" Importance="high" />
+  </Target>
+
+  <Target Name="AfterCalcver" DependsOnTargets="CalculateProjectVersion">
+  </Target>
+
+</Project>

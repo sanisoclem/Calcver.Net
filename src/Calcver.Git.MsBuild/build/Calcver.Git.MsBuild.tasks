@@ -1,0 +1,3 @@
+﻿<Project>
+  <UsingTask TaskName="Calcver.Git.MsBuild.GitCalcverTask" AssemblyFile="$(_CalcverGit_TaskAssembly)" />
+</Project>

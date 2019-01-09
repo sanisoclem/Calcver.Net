@@ -60,7 +60,7 @@ namespace Calcver.Tests
         [InlineAutoNData("1.2.3", 5)]
         [InlineAutoNData("v1.2.3", 0)]
         [InlineAutoNData(null, 3)]
-        public void GetVersion_AlwaysPutCommitHashMetadata(
+        public void GetVersion_Always_PutFirst7CharsOfCommitHashInMetadata(
             string lastTag,
             int numCommits,
             IRepository repository) {
@@ -71,7 +71,7 @@ namespace Calcver.Tests
             var version = repository.GetVersion();
 
             // assert
-            version.Metadata.Should().Be(commitSha);
+            version.Metadata.Should().Be(commitSha.Substring(0, 7));
         }
 
         [Theory]
@@ -192,11 +192,12 @@ namespace Calcver.Tests
         public static string CreateMockCommits(this IRepository repo, string lastTag, int numCommits = 0, string commitMessage = null) {
             var f = new Fixture();
             var commits = f.CreateMany<CommitInfo>(numCommits).ToList();
+            var tagCommitId = Convert.ToString(DateTime.Now.Ticks, 8);
 
             if (lastTag != null) {
                 var tag = new TagInfo {
                     Name = lastTag,
-                    Commit = lastTag
+                    Commit = tagCommitId
                 };
                 repo.GetTags().Returns(new TagInfo[] { tag });
             }
@@ -207,7 +208,7 @@ namespace Calcver.Tests
             
             repo.GetCommits(lastTag).Returns(commits);
 
-            return commits.LastOrDefault()?.Id ?? lastTag;
+            return commits.LastOrDefault()?.Id ?? tagCommitId;
         }
     }
 }
