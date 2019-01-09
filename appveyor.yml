@@ -7,30 +7,31 @@ image: Visual Studio 2017
 configuration: Release
 init:
 - ps: $env:customnugetversion = if ($env:APPVEYOR_REPO_TAG -eq $True) { "$env:APPVEYOR_REPO_TAG_NAME" } else { "$env:APPVEYOR_BUILD_VERSION" }
+- ps: $env:customnugetversion = If ($env:customnugetversion.startswith("v")) {$env:customnugetversion.substring(1)} Else {$env:customnugetversion}
 - ps: Update-AppveyorBuild -Version $env:customnugetversion
 before_build:
 - choco install opencover.portable
 - choco install codecov
 build_script:
-- ps: dotnet pack -c release /p:PackageVersion=$env:customnugetversion
+- ps: dotnet pack -c release /p:Version=$env:customnugetversion
 test_script:
 - cmd: OpenCover.Console.exe -register:user -oldstyle -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test -c debug --logger:trx;LogFileName=results.trx /p:DebugType=full tests/Calcver.Tests" -filter:"+[Calcver*]* -[Calcver.Tests*]*" -output:".\coverage.xml"
 - cmd: codecov -f .\coverage.xml -t "%CODECOV_TOKEN%"
 
 artifacts:
-- path: src\**\release\*.nupkg
-# deploy:
-# - provider: NuGet
-#   api_key:
-#     secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
-#   skip_symbols: true
-#   on:
-#     appveyor_repo_tag: true
-#     appveyor_repo_tag_name: /\d+\.\d+.\d+(-[a-zA-Z0-9]+)?/
-# - provider: NuGet
-#   api_key:
-#     secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
-#   skip_symbols: true
-#   on:
-#     branch: master
-#     appveyor_repo_tag: false
+- path: build\*.nupkg
+deploy:
+- provider: NuGet
+  api_key:
+    secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
+  skip_symbols: true
+  on:
+    appveyor_repo_tag: true
+    appveyor_repo_tag_name: /\d+\.\d+.\d+(-[a-zA-Z0-9]+)?/
+- provider: NuGet
+  api_key:
+    secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
+  skip_symbols: true
+  on:
+    branch: master
+    appveyor_repo_tag: false
