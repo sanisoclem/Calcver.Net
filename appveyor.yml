@@ -4,7 +4,10 @@ environment:
     secure: LFOfxjROaaSu0UJ8zNhwsVp5jyLiMPCtoa56HONs3z/uXtjPlrNOSlQXBFAjjGLp
 image: Visual Studio 2017
 configuration: Release
-init:
+branches:
+  only:
+  - master
+  - /release-\d+\.\d+/
 before_build:
 - ps: $env:versionSuffix = if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { "pr$env:APPVEYOR_PULL_REQUEST_NUMBER.$env:APPVEYOR_BUILD_ID" } else { "$env:APPVEYOR_BUILD_ID" }
 - ps: dotnet publish "$env:APPVEYOR_BUILD_FOLDER\src\Calcver.Git.Cli" -c release -o "$env:APPVEYOR_BUILD_FOLDER\build"
