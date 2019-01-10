@@ -9,8 +9,9 @@ init:
 before_build:
 - choco install opencover.portable
 - choco install codecov
+- ps: $env:versionSuffix = if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { "pr$env:APPVEYOR_PULL_REQUEST_NUMBER.$env:APPVEYOR_BUILD_ID" } else { "$env:APPVEYOR_BUILD_ID" }
 - ps: dotnet publish "$env:APPVEYOR_BUILD_FOLDER\src\Calcver.Git.Cli" -c release -o "$env:APPVEYOR_BUILD_FOLDER\build"
-- ps: $env:customnugetversion = dotnet "$env:APPVEYOR_BUILD_FOLDER\build\Calcver.Git.Cli.dll" version "$env:APPVEYOR_BUILD_FOLDER" "$env:APPVEYOR_BUILD_ID"
+- ps: $env:customnugetversion = dotnet "$env:APPVEYOR_BUILD_FOLDER\build\Calcver.Git.Cli.dll" version "$env:APPVEYOR_BUILD_FOLDER" "$env:versionSuffix"
 - ps: Update-AppveyorBuild -Version $env:customnugetversion
 build_script:
 - ps: dotnet pack -c release /p:Version=$env:customnugetversion
