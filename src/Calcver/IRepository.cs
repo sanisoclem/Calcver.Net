@@ -18,7 +18,7 @@ namespace Calcver
     public class TagInfo
     {
         public string Name { get; set; }
-        public string Commit { get; set; }
+        public CommitInfo Commit { get; set; }
 
     }
     public class CommitInfo

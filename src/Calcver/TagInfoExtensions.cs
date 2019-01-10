@@ -7,10 +7,10 @@ namespace Calcver
     {
         public static SemanticVersion GetVersion(this TagInfo tag) {
             if (tag.Name.StartsWith("v") && tag.Name.Substring(1).TryParseSemanticVersion(out var version)) {
-                return version;
+                return new SemanticVersion(version.Major, version.Minor, version.Patch, version.Prerelease, tag.Commit.ShortSha());
             }
             else if (tag.Name.TryParseSemanticVersion(out version)) {
-                return version;
+                return new SemanticVersion(version.Major, version.Minor, version.Patch, version.Prerelease, tag.Commit.ShortSha());
             }
             return null;
         }

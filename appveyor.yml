@@ -18,6 +18,9 @@ test_script:
 - cmd: OpenCover.Console.exe -register:user -oldstyle -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test -c debug --logger:trx;LogFileName=results.trx /p:DebugType=full tests/Calcver.Tests" -filter:"+[Calcver*]* -[Calcver.Tests*]*" -output:".\coverage.xml"
 - cmd: codecov -f .\coverage.xml -t "%CODECOV_TOKEN%"
 
+nuget:
+  disable_publish_on_pr: true
+  disable_publish_octopus: true
 artifacts:
 - path: build\*.nupkg
 deploy:

@@ -21,7 +21,7 @@ namespace Calcver
             var includedCommits = repo.GetCommits(lastTag?.Name).ToList();
 
             if (includedCommits.Count == 0) {
-                return new SemanticVersion(lastStableVersion.Major, lastStableVersion.Minor, lastStableVersion.Patch, lastStableVersion.Prerelease, lastTag?.Commit.Substring(0, 7));
+                return new SemanticVersion(lastStableVersion.Major, lastStableVersion.Minor, lastStableVersion.Patch, lastStableVersion.Prerelease, lastTag?.Commit.ShortSha());
             }
             else {
                 return lastStableVersion.CalculatePrereleaseVersion(includedCommits, settings?.PrereleaseSuffix);
@@ -59,6 +59,8 @@ namespace Calcver
             var tags = repo.GetTags().FilterVersionTags().ToList();
             TagInfo prevTag = null;
             foreach (var (tag, ver) in tags) {
+                if (tag.Commit == prevTag?.Commit)
+                    continue;
                 yield return repo.GetChangeLogForRange(prevTag, tag);
                 prevTag = tag;
             }
@@ -108,7 +110,7 @@ namespace Calcver
                 }
             }
 
-            var metadata = commits.Last().Id.Substring(0,7); // dont take too many chars (should this be implemented in the version control lib?)
+            var metadata = commits.Last().ShortSha();
             var prerelease = $"{commits.Count}";
             if (buildNumber != null)
                 prerelease += $".{buildNumber}";

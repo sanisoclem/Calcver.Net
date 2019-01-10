@@ -21,17 +21,14 @@ namespace Calcver.Git
                 filter.IncludeReachableFrom = _repo.Lookup(until);
 
             return _repo.Commits.QueryBy(filter)
-                .Select(c => new CommitInfo {
-                    Message = c.Message,
-                    Id = c.Sha
-                });
+                .Select(c => c.ToCommitInfo());
         }
 
         public IEnumerable<TagInfo> GetTags() {
             return _repo.Tags.Select(t => new TagInfo {
-                Name = t.CanonicalName,
-                Commit = t.PeeledTarget.Sha,
-            });
+                Name = t.FriendlyName,
+                Commit = (_repo.Lookup(t.PeeledTarget.Sha) as Commit).ToCommitInfo(),
+            }).Reverse();
         }
 
         #region IDisposable Support
@@ -53,5 +50,14 @@ namespace Calcver.Git
             Dispose(true);
         }
         #endregion
+    }
+
+    public static class Extensions
+    {
+        public static CommitInfo ToCommitInfo(this Commit commit)
+            => commit == null ? null : new CommitInfo {
+                Id = commit.Sha,
+                Message = commit.Message
+            };
     }
 }

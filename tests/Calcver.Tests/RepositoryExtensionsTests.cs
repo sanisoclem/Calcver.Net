@@ -140,6 +140,8 @@ namespace Calcver.Tests
 
             // assert
             result.Should().NotBeNull();
+            result.Tag.Should().NotBeNull();
+            result.Version.Metadata.Should().Be(result.Tag.Commit.ShortSha());
         }
 
         [Theory]
@@ -185,6 +187,33 @@ namespace Calcver.Tests
             // assert
             result.Count().Should().Be(3);
         }
+        [Theory]
+        [AutoNData]
+        public void GetChangeLogs_WhenMultipleTagsOnCommit_OnlyTakeFirstTag(
+            TagInfo v1,
+            TagInfo v2,
+            TagInfo v1b,
+            List<CommitInfo> commits,
+            IRepository repository) {
+
+            // arrange
+            v1b.Commit = v1.Commit;
+
+            repository.GetTags().Returns(new TagInfo[] { v1, v1b, v2 });
+            repository.GetCommits(v2.Name, null).Returns(commits);
+            repository.GetCommits(v1.Name, v2.Name).Returns(commits);
+            repository.GetCommits(v1b.Name, v2.Name).Returns(commits);
+            repository.GetCommits(v1.Name, v1b.Name).Returns(new CommitInfo[] { });
+            repository.GetCommits(null, v1.Name).Returns(commits);
+            repository.GetCommits(null, v1b.Name).Returns(commits);
+
+
+            // act
+            var result = repository.GetChangeLogs();
+
+            // assert
+            result.Should().NotContain(c => c.Tag != null && c.Tag.Name == v1b.Name);
+        }
     }
 
     public static class RepositoryTestHelpers
@@ -197,7 +226,7 @@ namespace Calcver.Tests
             if (lastTag != null) {
                 var tag = new TagInfo {
                     Name = lastTag,
-                    Commit = tagCommitId
+                    Commit = new CommitInfo { Id = tagCommitId, Message = string.Empty }
                 };
                 repo.GetTags().Returns(new TagInfo[] { tag });
             }
