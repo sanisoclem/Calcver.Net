@@ -6,8 +6,8 @@ skip_branch_with_pr: true
 image: Visual Studio 2017
 configuration: Release
 init:
-- ps: $env:customnugetversion = if ($env:APPVEYOR_REPO_TAG -eq $True) { "$env:APPVEYOR_REPO_TAG_NAME" } else { "$env:APPVEYOR_BUILD_VERSION" }
-- ps: $env:customnugetversion = If ($env:customnugetversion.startswith("v")) {$env:customnugetversion.substring(1)} Else {$env:customnugetversion}
+- ps: dotnet publish "$env:APPVEYOR_BUILD_FOLDER\src\Calcver.Git.Cli" -c release -o "$env:APPVEYOR_BUILD_FOLDER\build"
+- ps: $env:customnugetversion = dotnet "$env:APPVEYOR_BUILD_FOLDER\build\Calcver.Git.Cli.dll" version "$env:APPVEYOR_BUILD_FOLDER" "$env:APPVEYOR_BUILD_ID"
 - ps: Update-AppveyorBuild -Version $env:customnugetversion
 before_build:
 - choco install opencover.portable
