@@ -2,23 +2,23 @@ version: 0.1.0-alpha.{build}
 environment:
   CODECOV_TOKEN:
     secure: LFOfxjROaaSu0UJ8zNhwsVp5jyLiMPCtoa56HONs3z/uXtjPlrNOSlQXBFAjjGLp
-skip_branch_with_pr: true
 image: Visual Studio 2017
 configuration: Release
 init:
 before_build:
-- choco install opencover.portable
-- choco install codecov
 - ps: $env:versionSuffix = if ($env:APPVEYOR_PULL_REQUEST_NUMBER) { "pr$env:APPVEYOR_PULL_REQUEST_NUMBER.$env:APPVEYOR_BUILD_ID" } else { "$env:APPVEYOR_BUILD_ID" }
 - ps: dotnet publish "$env:APPVEYOR_BUILD_FOLDER\src\Calcver.Git.Cli" -c release -o "$env:APPVEYOR_BUILD_FOLDER\build"
 - ps: $env:customnugetversion = dotnet "$env:APPVEYOR_BUILD_FOLDER\build\Calcver.Git.Cli.dll" version "$env:APPVEYOR_BUILD_FOLDER" "$env:versionSuffix"
 - ps: Update-AppveyorBuild -Version $env:customnugetversion
+- choco install opencover.portable
+- choco install codecov
 build_script:
 - ps: dotnet pack -c release /p:Version=$env:customnugetversion
 test_script:
 - cmd: OpenCover.Console.exe -register:user -oldstyle -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test -c debug --logger:trx;LogFileName=results.trx /p:DebugType=full tests/Calcver.Tests" -filter:"+[Calcver*]* -[Calcver.Tests*]*" -output:".\coverage.xml"
 - cmd: codecov -f .\coverage.xml -t "%CODECOV_TOKEN%"
 
+skip_branch_with_pr: true
 nuget:
   disable_publish_on_pr: true
   disable_publish_octopus: true
