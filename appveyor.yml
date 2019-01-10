@@ -6,12 +6,12 @@ skip_branch_with_pr: true
 image: Visual Studio 2017
 configuration: Release
 init:
-- ps: dotnet publish "$env:APPVEYOR_BUILD_FOLDER\src\Calcver.Git.Cli" -c release -o "$env:APPVEYOR_BUILD_FOLDER\build"
-- ps: $env:customnugetversion = dotnet "$env:APPVEYOR_BUILD_FOLDER\build\Calcver.Git.Cli.dll" version "$env:APPVEYOR_BUILD_FOLDER" "$env:APPVEYOR_BUILD_ID"
-- ps: Update-AppveyorBuild -Version $env:customnugetversion
 before_build:
 - choco install opencover.portable
 - choco install codecov
+- ps: dotnet publish "$env:APPVEYOR_BUILD_FOLDER\src\Calcver.Git.Cli" -c release -o "$env:APPVEYOR_BUILD_FOLDER\build"
+- ps: $env:customnugetversion = dotnet "$env:APPVEYOR_BUILD_FOLDER\build\Calcver.Git.Cli.dll" version "$env:APPVEYOR_BUILD_FOLDER" "$env:APPVEYOR_BUILD_ID"
+- ps: Update-AppveyorBuild -Version $env:customnugetversion
 build_script:
 - ps: dotnet pack -c release /p:Version=$env:customnugetversion
 test_script:
