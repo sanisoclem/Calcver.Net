@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Calcver.Git.MsBuild {
-
     public class GitCalcverTask : Task {
         [Output]
         public string CalculatedVersion { get; set; }

@@ -22,7 +22,6 @@ namespace Calcver.Tests.Helpers {
             if (commitMessage != null && numCommits > 0)
                 commits[0].Message = commitMessage;
 
-
             repo.GetCommits(lastTag).Returns(commits);
 
             return commits.LastOrDefault()?.Id ?? tagCommitId;
