@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Calcver
-{
-    public class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion>
-    {
+namespace Calcver {
+    public class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion> {
         readonly string _toString;
         public SemanticVersion(int major, int minor, int patch,
-                    string preRelease = null, string meta = null) {
+                    string preRelease = null, string meta = null)
+        {
             Major = major;
             Minor = minor;
             Patch = patch;
@@ -43,35 +42,39 @@ namespace Calcver
         public override string ToString()
             => _toString;
 
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             unchecked  // Allow integer overflow with wrapping
             {
                 int hash = 17;
-                hash = hash * 23 + Major.GetHashCode();
-                hash = hash * 23 + Minor.GetHashCode();
-                hash = hash * 23 + Patch.GetHashCode();
+                hash = (hash * 23) + Major.GetHashCode();
+                hash = (hash * 23) + Minor.GetHashCode();
+                hash = (hash * 23) + Patch.GetHashCode();
                 if (Prerelease != null) {
-                    hash = hash * 23 + Prerelease.GetHashCode();
+                    hash = (hash * 23) + Prerelease.GetHashCode();
                 }
                 return hash;
             }
         }
 
-        public bool Equals(SemanticVersion other) {
+        public bool Equals(SemanticVersion other)
+        {
             if (ReferenceEquals(other, null)) {
                 return false;
             }
             return CompareTo(other) == 0;
         }
 
-        public int CompareTo(SemanticVersion other) {
+        public int CompareTo(SemanticVersion other)
+        {
             if (ReferenceEquals(other, null)) {
                 return 1;
             }
             return PartComparisons(other).Where(r => r != 0).FirstOrDefault();
         }
 
-        private IEnumerable<int> PartComparisons(SemanticVersion other) {
+        private IEnumerable<int> PartComparisons(SemanticVersion other)
+        {
             yield return Major.CompareTo(other.Major);
             yield return Minor.CompareTo(other.Minor);
             yield return Patch.CompareTo(other.Patch);
@@ -86,43 +89,50 @@ namespace Calcver
             }
         }
 
-        public override bool Equals(object other) {
+        public override bool Equals(object other)
+        {
             return Equals(other as SemanticVersion);
         }
 
-        public static bool operator ==(SemanticVersion a, SemanticVersion b) {
+        public static bool operator ==(SemanticVersion a, SemanticVersion b)
+        {
             if (ReferenceEquals(a, null)) {
                 return ReferenceEquals(b, null);
             }
             return a.Equals(b);
         }
 
-        public static bool operator !=(SemanticVersion a, SemanticVersion b) {
+        public static bool operator !=(SemanticVersion a, SemanticVersion b)
+        {
             return !(a == b);
         }
 
-        public static bool operator >(SemanticVersion a, SemanticVersion b) {
+        public static bool operator >(SemanticVersion a, SemanticVersion b)
+        {
             if (ReferenceEquals(a, null)) {
                 return false;
             }
             return a.CompareTo(b) > 0;
         }
 
-        public static bool operator >=(SemanticVersion a, SemanticVersion b) {
+        public static bool operator >=(SemanticVersion a, SemanticVersion b)
+        {
             if (ReferenceEquals(a, null)) {
                 return ReferenceEquals(b, null) ? true : false;
             }
             return a.CompareTo(b) >= 0;
         }
 
-        public static bool operator <(SemanticVersion a, SemanticVersion b) {
+        public static bool operator <(SemanticVersion a, SemanticVersion b)
+        {
             if (ReferenceEquals(a, null)) {
                 return ReferenceEquals(b, null) ? false : true;
             }
             return a.CompareTo(b) < 0;
         }
 
-        public static bool operator <=(SemanticVersion a, SemanticVersion b) {
+        public static bool operator <=(SemanticVersion a, SemanticVersion b)
+        {
             if (ReferenceEquals(a, null)) {
                 return true;
             }

@@ -5,19 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Calcver.Tests.Helpers
-{
-    public class AutoNDataAttribute : AutoDataAttribute
-    {
+namespace Calcver.Tests.Helpers {
+    public class AutoNDataAttribute : AutoDataAttribute {
         public AutoNDataAttribute()
             : base(() => new Fixture()
                 .Customize(new AutoNSubstituteCustomization())
-                .Customize(new TagInfoCustomization())) {
-
+                .Customize(new TagInfoCustomization()))
+        {
         }
         protected AutoNDataAttribute(IFixture fixture)
-            : base(() => fixture.Customize(new AutoNSubstituteCustomization())) {
-
+            : base(() => fixture.Customize(new AutoNSubstituteCustomization()))
+        {
         }
     }
 }

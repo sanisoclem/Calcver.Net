@@ -8,16 +8,15 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Calcver.Tests
-{
-    public class SemanticVersionExtensionsTests
-    {
+namespace Calcver.Tests {
+    public class SemanticVersionExtensionsTests {
         [Theory]
         [InlineData("1.0")]
         [InlineData("1.0.0.0")]
         [InlineData("1.0.0-05")]
         [InlineData("123")]
-        public void ParseSemanticVersions_WhenInvalid_ThenThrow(string version) {
+        public void ParseSemanticVersions_WhenInvalid_ThenThrow(string version)
+        {
             // act
             Action action = () => version.ParseSemanticVersion();
 
@@ -30,7 +29,8 @@ namespace Calcver.Tests
         [InlineData("1.0.0.0")]
         [InlineData("1.0.0-05")]
         [InlineData("123")]
-        public void TryParseSemanticVersions_WhenInvalid_ReturnFalse(string version) {
+        public void TryParseSemanticVersions_WhenInvalid_ReturnFalse(string version)
+        {
             // act
             var result = version.TryParseSemanticVersion(out _);
 
@@ -43,7 +43,8 @@ namespace Calcver.Tests
         [InlineData("1.0.0-5.1+meta")]
         [InlineData("1.0.0+meta")]
         [InlineData("1.0.0-5.87.521+meta")]
-        public void ParseSemanticVersions_WhenValid_ResultsMatchesInput(string version) {
+        public void ParseSemanticVersions_WhenValid_ResultsMatchesInput(string version)
+        {
             // act
             var result = version.ParseSemanticVersion();
 
