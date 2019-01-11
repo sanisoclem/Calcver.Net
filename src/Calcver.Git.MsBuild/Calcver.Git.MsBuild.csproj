@@ -2,10 +2,10 @@
   <!--see: https://natemcmaster.com/blog/2017/07/05/msbuild-task-in-nuget/ -->
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netcoreapp2.1</TargetFrameworks>
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <BuildOutputTargetFolder>tasks</BuildOutputTargetFolder>
-    <IsPackable>false</IsPackable>
+    <IsPackable>true</IsPackable>
 
     <DevelopmentDependency>true</DevelopmentDependency>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -18,12 +18,38 @@
     <PackageId>Calcver.Git.MsBuild</PackageId>
   </PropertyGroup>
 
+  <Target Name="PackBuildOutputs" DependsOnTargets="SatelliteDllsProjectOutputGroup;DebugSymbolsProjectOutputGroup">
+    <PropertyGroup>
+      <BuildSubDir Condition=" '$(TargetFramework)' == 'netcoreapp2.1' ">netcoreapp2.1\</BuildSubDir>
+      <BuildSubDir Condition=" '$(TargetFramework)' == 'net461' ">net461\</BuildSubDir>
+    </PropertyGroup>
+    <Error Text="Unrecognized TargetFramework" Condition=" '$(BuildSubDir)' == '' " />
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="&#xA;                        $(OutputPath)LibGit2Sharp.dll*;&#xA;                        $(OutputPath)Microsoft.Build.*dll;&#xA;                        $(OutputPath)Calcver.Git.dll;&#xA;                        $(OutputPath)Calcver.dll;&#xA;               ">
+        <PackagePath>tasks\$(BuildSubDir)</PackagePath>
+      </TfmSpecificPackageFile>
+      <!-- Package up the libgit2 native binaries -->
+      <TfmSpecificPackageFile Include="@(ContentWithTargetPath)" Condition=" '%(ContentWithTargetPath.CopyToOutputDirectory)' == 'PreserveNewest' ">
+        <PackagePath>build\$(BuildSubDir)%(ContentWithTargetPath.TargetPath)</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
+  </Target>
+
   <ItemGroup>
-    <!-- pack the props files -->
-    <Content Include="build\Calcver.Git.MsBuild.props" PackagePath="build\" />
-    <Content Include="build\Calcver.Git.MsBuild.tasks" PackagePath="build\" />
-    <Content Include="build\Calcver.Git.MsBuild.targets" PackagePath="build\" />
+    <None Include="build\**">
+      <Pack>true</Pack>
+      <PackagePath>build\</PackagePath>
+    </None>
   </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <PackageReference>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <ProjectReference>
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemDefinitionGroup>
 
   <ItemGroup>
     <!-- PrivateAssets="All": so the package wont be listed as a dependency -->

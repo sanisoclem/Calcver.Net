@@ -6,8 +6,11 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-
   <ItemGroup>
+    <PackageReference Include="Calcver.Git.MsBuild" Version="0.0.0-dev">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
