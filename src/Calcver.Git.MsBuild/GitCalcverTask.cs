@@ -4,29 +4,27 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Calcver.Git.MsBuild
-{
-    // -- TODO: INVOKE CLI TO PREVENT DEPENDENCY HELL
-    public class GitCalcverTask : Task
-    {
+namespace Calcver.Git.MsBuild {
+
+    public class GitCalcverTask : Task {
         [Output]
         public string CalculatedVersion { get; set; }
 
         public string PrereleaseSuffix { get; set; }
         public string RepositoryPath { get; set; }
 
-        public override bool Execute() {
-
+        public override bool Execute()
+        {
             try {
                 var settings = new CalcverSettings {
                     PrereleaseSuffix = PrereleaseSuffix
                 };
                 using (var repo = new GitRepository(RepositoryPath)) {
-                    CalculatedVersion =  repo.GetVersion(settings).ToString();
+                    CalculatedVersion = repo.GetVersion(settings).ToString();
                 }
                 return true;
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 Log.LogErrorFromException(ex);
                 return false;
             }

@@ -1,5 +1,4 @@
-﻿using AutoFixture;
-using Calcver.Tests.Helpers;
+﻿using Calcver.Tests.Helpers;
 using FluentAssertions;
 using NSubstitute;
 using System;
@@ -8,10 +7,8 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Calcver.Tests
-{
-    public class RepositoryExtensionsTests
-    {
+namespace Calcver.Tests {
+    public class RepositoryExtensionsTests {
         [Theory]
         [InlineAutoNData("1.0.0")]
         [InlineAutoNData("1.0.0-123")]
@@ -19,7 +16,8 @@ namespace Calcver.Tests
         [InlineAutoNData("v1.0.0-123")]
         public void GetVersion_WhenOnTag_UseTagAsVersion(
             string lastTag,
-            IRepository repository) {
+            IRepository repository)
+        {
             // arrange
             repository.CreateMockCommits(lastTag, 0);
 
@@ -45,7 +43,8 @@ namespace Calcver.Tests
             string buildNum,
             string commitMessage,
             string expected,
-            IRepository repository) {
+            IRepository repository)
+        {
             // arrange
             repository.CreateMockCommits(lastTag, numCommits, commitMessage);
 
@@ -63,7 +62,8 @@ namespace Calcver.Tests
         public void GetVersion_Always_PutFirst7CharsOfCommitHashInMetadata(
             string lastTag,
             int numCommits,
-            IRepository repository) {
+            IRepository repository)
+        {
             // arrange
             var commitSha = repository.CreateMockCommits(lastTag, numCommits);
 
@@ -77,7 +77,8 @@ namespace Calcver.Tests
         [Theory]
         [AutoNData]
         public void GetVersion_WhenEmptyRepo_ReturnZero(
-            IRepository repository) {
+            IRepository repository)
+        {
             // arrange
             repository.CreateMockCommits(null, 0);
 
@@ -91,8 +92,8 @@ namespace Calcver.Tests
         [Theory]
         [AutoNData]
         public void GetChangeLog_WhenNoCommits_ReturnNull(
-            IRepository repository) {
-
+            IRepository repository)
+        {
             // arrange
             repository.GetTags().Returns(new TagInfo[] { });
             repository.GetCommits().ReturnsForAnyArgs(new CommitInfo[] { });
@@ -109,8 +110,8 @@ namespace Calcver.Tests
         public void GetChangeLog_WhenInvalidTag_ThrowArgumentException(
             TagInfo tag,
             TagInfo otherTag,
-            IRepository repository) {
-
+            IRepository repository)
+        {
             // arrange
             repository.GetTags().Returns(new TagInfo[] { tag });
 
@@ -127,13 +128,12 @@ namespace Calcver.Tests
             TagInfo v1,
             TagInfo v2,
             List<CommitInfo> v2Commits,
-            IRepository repository) {
-
+            IRepository repository)
+        {
             // arrange
             repository.GetTags().Returns(new TagInfo[] { v1, v2 });
             repository.GetCommits(v2.Name, null).Returns(new CommitInfo[] { });
             repository.GetCommits(v1.Name, v2.Name).Returns(v2Commits);
-
 
             // act
             var result = repository.GetChangeLog(null);
@@ -141,7 +141,7 @@ namespace Calcver.Tests
             // assert
             result.Should().NotBeNull();
             result.Tag.Should().NotBeNull();
-            result.Version.Metadata.Should().Be(result.Tag.Commit.ShortSha());
+            result.Version.Metadata.Should().Be(result.Tag.Commit.ShortId());
         }
 
         [Theory]
@@ -150,14 +150,13 @@ namespace Calcver.Tests
             TagInfo v1,
             TagInfo v2,
             List<CommitInfo> commits,
-            IRepository repository) {
-
+            IRepository repository)
+        {
             // arrange
             repository.GetTags().Returns(new TagInfo[] { v1, v2 });
             repository.GetCommits(v2.Name, null).Returns(new CommitInfo[] { });
             repository.GetCommits(v1.Name, v2.Name).Returns(commits);
             repository.GetCommits(null, v1.Name).Returns(commits);
-
 
             // act
             var result = repository.GetChangeLogs();
@@ -172,14 +171,13 @@ namespace Calcver.Tests
             TagInfo v1,
             TagInfo v2,
             List<CommitInfo> commits,
-            IRepository repository) {
-
+            IRepository repository)
+        {
             // arrange
             repository.GetTags().Returns(new TagInfo[] { v1, v2 });
             repository.GetCommits(v2.Name, null).Returns(commits);
             repository.GetCommits(v1.Name, v2.Name).Returns(commits);
             repository.GetCommits(null, v1.Name).Returns(commits);
-
 
             // act
             var result = repository.GetChangeLogs();
@@ -194,8 +192,8 @@ namespace Calcver.Tests
             TagInfo v2,
             TagInfo v1b,
             List<CommitInfo> commits,
-            IRepository repository) {
-
+            IRepository repository)
+        {
             // arrange
             v1b.Commit = v1.Commit;
 
@@ -207,37 +205,11 @@ namespace Calcver.Tests
             repository.GetCommits(null, v1.Name).Returns(commits);
             repository.GetCommits(null, v1b.Name).Returns(commits);
 
-
             // act
             var result = repository.GetChangeLogs();
 
             // assert
             result.Should().NotContain(c => c.Tag != null && c.Tag.Name == v1b.Name);
-        }
-    }
-
-    public static class RepositoryTestHelpers
-    {
-        public static string CreateMockCommits(this IRepository repo, string lastTag, int numCommits = 0, string commitMessage = null) {
-            var f = new Fixture();
-            var commits = f.CreateMany<CommitInfo>(numCommits).ToList();
-            var tagCommitId = Convert.ToString(DateTime.Now.Ticks, 8);
-
-            if (lastTag != null) {
-                var tag = new TagInfo {
-                    Name = lastTag,
-                    Commit = new CommitInfo { Id = tagCommitId, Message = string.Empty }
-                };
-                repo.GetTags().Returns(new TagInfo[] { tag });
-            }
-
-            if (commitMessage != null && numCommits > 0)
-                commits[0].Message = commitMessage;
-
-            
-            repo.GetCommits(lastTag).Returns(commits);
-
-            return commits.LastOrDefault()?.Id ?? tagCommitId;
         }
     }
 }

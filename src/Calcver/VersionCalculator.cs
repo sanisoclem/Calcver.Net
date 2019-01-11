@@ -3,16 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Calcver
-{
-    public class CalcverContext
-    {
-
-    }
-
-    public static class VersionCalculator
-    {
-        public static SemanticVersion GetVersion(this IRepository repo, CalcverSettings settings = null) {
+namespace Calcver {
+    public static class VersionCalculator {
+        public static SemanticVersion GetVersion(this IRepository repo, CalcverSettings settings = null)
+        {
             var (lastTag, lastStableVersion) = repo.GetLastStableVersion();
 
             if (lastStableVersion == null)
@@ -21,7 +15,7 @@ namespace Calcver
             var includedCommits = repo.GetCommits(lastTag?.Name).ToList();
 
             if (includedCommits.Count == 0) {
-                return new SemanticVersion(lastStableVersion.Major, lastStableVersion.Minor, lastStableVersion.Patch, lastStableVersion.Prerelease, lastTag?.Commit.ShortSha());
+                return new SemanticVersion(lastStableVersion.Major, lastStableVersion.Minor, lastStableVersion.Patch, lastStableVersion.Prerelease, lastTag?.Commit.ShortId());
             }
             else {
                 return lastStableVersion.CalculatePrereleaseVersion(includedCommits, settings?.PrereleaseSuffix);
@@ -31,7 +25,8 @@ namespace Calcver
         public static ChangeLog GetChangeLog(this IRepository repo, CalcverSettings settings = null)
             => repo.GetChangeLog(null, settings);
 
-        public static ChangeLog GetChangeLog(this IRepository repo, TagInfo tag, CalcverSettings settings = null) {
+        public static ChangeLog GetChangeLog(this IRepository repo, TagInfo tag, CalcverSettings settings = null)
+        {
             TagInfo prevTag;
             if (tag == null) {
                 prevTag = repo.GetTags().FilterVersionTags().LastOrDefault().Item1;
@@ -55,7 +50,8 @@ namespace Calcver
             return result;
         }
 
-        public static IEnumerable<ChangeLog> GetChangeLogs(this IRepository repo, CalcverSettings settings = null) {
+        public static IEnumerable<ChangeLog> GetChangeLogs(this IRepository repo, CalcverSettings settings = null)
+        {
             var tags = repo.GetTags().FilterVersionTags().ToList();
             TagInfo prevTag = null;
             foreach (var (tag, ver) in tags) {
@@ -71,7 +67,8 @@ namespace Calcver
             }
         }
 
-        private static ChangeLog GetChangeLogForRange(this IRepository repo, TagInfo tagFrom, TagInfo target, CalcverSettings settings = null) {
+        private static ChangeLog GetChangeLogForRange(this IRepository repo, TagInfo tagFrom, TagInfo target, CalcverSettings settings = null)
+        {
             var commits = repo.GetCommits(tagFrom?.Name, target?.Name);
 
             if (commits.Count() == 0)
@@ -89,12 +86,13 @@ namespace Calcver
             return retval;
         }
 
-        
+
 
         private static (TagInfo, SemanticVersion) GetLastStableVersion(this IRepository repository)
             => repository.GetTags().FilterVersionTags().LastOrDefault();
 
-        private static SemanticVersion CalculatePrereleaseVersion(this SemanticVersion version, IList<CommitInfo> commits, string buildNumber = null) {
+        private static SemanticVersion CalculatePrereleaseVersion(this SemanticVersion version, IList<CommitInfo> commits, string buildNumber = null)
+        {
             var retval = version.GetBaseVersion();
             bool major = false, minor = false;
             foreach (var commit in commits) {
@@ -110,16 +108,16 @@ namespace Calcver
                 }
             }
 
-            var metadata = commits.Last().ShortSha();
+            var metadata = commits.Last().ShortId();
             var prerelease = $"{commits.Count}";
             if (buildNumber != null)
                 prerelease += $".{buildNumber}";
 
             if (major)
-                return retval.BumpMajor(prerelease,metadata);
+                return retval.BumpMajor(prerelease, metadata);
             else if (minor)
                 return retval.BumpMinor(prerelease, metadata);
-            
+
             return retval.BumpPatch(prerelease, metadata);
         }
     }

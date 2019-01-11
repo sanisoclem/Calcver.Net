@@ -2,8 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Calcver
-{
+namespace Calcver {
     public static class SemanticVersionExtensions {
 
         private static Regex parseRegex = new Regex(@"^
@@ -19,7 +18,8 @@ namespace Calcver
             $",
             RegexOptions.IgnorePatternWhitespace);
 
-        public static SemanticVersion ParseSemanticVersion(this string input) {
+        public static SemanticVersion ParseSemanticVersion(this string input)
+        {
             if (TryParseSemanticVersion(input, out var version)) {
                 return version;
             }
@@ -27,7 +27,8 @@ namespace Calcver
                 throw new ArgumentException($"Invalid version string: {input}", nameof(input));
             }
         }
-        public static bool TryParseSemanticVersion(this string input, out SemanticVersion version) {
+        public static bool TryParseSemanticVersion(this string input, out SemanticVersion version)
+        {
             version = null;
 
             var match = parseRegex.Match(input);
