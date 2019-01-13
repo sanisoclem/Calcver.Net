@@ -13,8 +13,8 @@ Automatic nuget library versioning using [semver2.0](https://semver.org/) and [c
 
 | Build server | Platform     | Build status                                                                                                                                                  |
 |--------------|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| AppVeyor     | Windows      | [![AppVeyor](https://img.shields.io/appveyor/ci/sanisoclem/calcver-net.svg?logo=appveyor&style=flat)](https://ci.appveyor.com/project/sanisoclem/calcver-net) |
-| Travis       | Linux / OS X | - |
+| AppVeyor     | Windows      | [![AppVeyor](https://img.shields.io/appveyor/ci/sanisoclem/calcver-net.svg?style=flat)](https://ci.appveyor.com/project/sanisoclem/calcver-net) |
+| Travis       | Linux / OS X | [![Build Status](https://travis-ci.org/PotatoEngineering/Calcver.Net.svg?branch=master)](https://travis-ci.org/PotatoEngineering/Calcver.Net) |
 
 ## Nuget Packages
 

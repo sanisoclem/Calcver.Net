@@ -7,7 +7,7 @@ namespace Calcver.Tests.Helpers {
             fixture.Register(() => {
                 var ver = fixture.Create<SemanticVersion>().GetBaseVersion().ToString();
                 return new TagInfo {
-                    Commit = new CommitInfo { Id = ver, Message = string.Empty },
+                    Commit = new CommitInfo { Id = ver.PadLeft(64,'x'), Message = string.Empty },
                     Name = ver
                 };
             });
