@@ -5,12 +5,15 @@ using System.Linq;
 
 namespace Calcver.Git {
     public class GitRepository : IRepository, IDisposable {
+        readonly string _root;
         Repository _repo;
 
         public GitRepository(string path)
         {
-            _repo = new Repository(Repository.Discover(path));
+            _root = Repository.Discover(path);
+            _repo = new Repository(_root);
         }
+        public string RootPath => _root;
 
         public IEnumerable<CommitInfo> GetCommits(string since = null, string until = null)
         {
