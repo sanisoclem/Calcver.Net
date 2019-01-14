@@ -28,8 +28,8 @@ namespace Calcver.Tests
             bool expected) {
 
             // arrange
-            var v1 = ver1?.ParseSemanticVersion();
-            var v2 = ver2?.ParseSemanticVersion();
+            var v1 = ver1 == null ? null : SemanticVersion.Parse(ver1);
+            var v2 = ver2 == null ? null : SemanticVersion.Parse(ver2);
 
             // act
             var result = v1 > v2 && v1 >= v2;
@@ -49,8 +49,8 @@ namespace Calcver.Tests
             string ver2) {
 
             // arrange
-            var v1 = ver1?.ParseSemanticVersion();
-            var v2 = ver2?.ParseSemanticVersion();
+            var v1 = ver1 == null ? null: SemanticVersion.Parse(ver1);
+            var v2 = ver2 == null ? null : SemanticVersion.Parse(ver2);
 
             // act
             var result = v1 == v2 && v1 >= v2 && v1 <= v2;
@@ -65,9 +65,10 @@ namespace Calcver.Tests
         [InlineData("1.0.0.0")]
         [InlineData("1.0.0-05")]
         [InlineData("123")]
-        public void ParseSemanticVersions_WhenInvalid_ThenThrow(string version) {
+        [InlineData("parseinvalid")]
+        public void Parse_WhenInvalid_ThenThrow(string version) {
             // act
-            Action action = () => version.ParseSemanticVersion();
+            Action action = () => SemanticVersion.Parse(version);
 
             // assert
             action.Should().Throw<ArgumentException>();
@@ -77,13 +78,28 @@ namespace Calcver.Tests
         [InlineData("1.0")]
         [InlineData("1.0.0.0")]
         [InlineData("1.0.0-05")]
-        [InlineData("123")]
-        public void TryParseSemanticVersions_WhenInvalid_ReturnFalse(string version) {
+        [InlineData("555")]
+        [InlineData("tryparseinvalid")]
+        public void TryParse_WhenInvalid_ReturnFalse(string version) {
             // act
-            var result = version.TryParseSemanticVersion(out _);
+            var result = SemanticVersion.TryParse(version, out _);
 
             // assert
             result.Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData("1.0.0")]
+        [InlineData("1.0.0-5.1+meta")]
+        [InlineData("1.0.0+meta")]
+        [InlineData("1.0.0-5.87.521+meta")]
+        public void Parse_WhenValid_ResultsMatchesInput(string version)
+        {
+            // act
+            var result = SemanticVersion.Parse(version);
+
+            // assert
+            result.ToString().Should().Be(version.ToString()); // tostring to include metadata
         }
     }
 }

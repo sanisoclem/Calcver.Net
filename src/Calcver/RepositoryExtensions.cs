@@ -4,10 +4,17 @@ using System.Linq;
 using System.Text;
 
 namespace Calcver {
-    public static class VersionCalculator {
+    public static class RepositoryExtensions {
+
+        public static IEnumerable<(TagInfo, SemanticVersion)> GetVersionTags(this IRepository repo)
+           => repo.GetTags().Select(t => (t, t.GetVersion())).Where(t => t.Item2 != null);
+
+        public static IEnumerable<ConventionalCommit> GetConventionalCommits(this IEnumerable<CommitInfo> commits)
+            => commits.Select(c => ConventionalCommit.TryParse(c, out var cc) ? cc : null).Where(cc => cc != null);
+
         public static SemanticVersion GetVersion(this IRepository repo, CalcverSettings settings = null)
         {
-            var (lastTag, lastStableVersion) = repo.GetLastStableVersion();
+            var (lastTag, lastStableVersion) = repo.GetVersionTags().LastOrDefault();
 
             if (lastStableVersion == null)
                 lastStableVersion = new SemanticVersion(0, 0, 0);
@@ -29,10 +36,10 @@ namespace Calcver {
         {
             TagInfo prevTag;
             if (tag == null) {
-                prevTag = repo.GetTags().FilterVersionTags().LastOrDefault().Item1;
+                prevTag = repo.GetVersionTags().LastOrDefault().Item1;
             }
             else {
-                var tags = repo.GetTags().FilterVersionTags().ToList();
+                var tags = repo.GetVersionTags().ToList();
                 var match = new (TagInfo, SemanticVersion)[] { (null, null) }.Concat(tags)
                     .Zip(tags, (prev, next) => new { prev, next }).SingleOrDefault(i => i.next.Item1.Name == tag.Name);
                 if (match == null)
@@ -52,7 +59,7 @@ namespace Calcver {
 
         public static IEnumerable<ChangeLog> GetChangeLogs(this IRepository repo, CalcverSettings settings = null)
         {
-            var tags = repo.GetTags().FilterVersionTags().ToList();
+            var tags = repo.GetVersionTags().ToList();
             TagInfo prevTag = null;
             foreach (var (tag, ver) in tags) {
                 if (tag.Commit == prevTag?.Commit)
@@ -76,34 +83,26 @@ namespace Calcver {
 
             var retval = new ChangeLog {
                 Version = target?.GetVersion() ?? repo.GetVersion(settings),
+                Changes = commits.GetConventionalCommits().ToList(),
                 Tag = target // could be null
             };
 
-            foreach (var commit in commits) {
-                // TODO
-            }
-
             return retval;
         }
-
-
-
-        private static (TagInfo, SemanticVersion) GetLastStableVersion(this IRepository repository)
-            => repository.GetTags().FilterVersionTags().LastOrDefault();
 
         private static SemanticVersion CalculatePrereleaseVersion(this SemanticVersion version, IList<CommitInfo> commits, string buildNumber = null)
         {
             var retval = version.GetBaseVersion();
             bool major = false, minor = false;
-            foreach (var commit in commits) {
-                if (CalcverSettings.MajorBumpRegex.IsMatch(commit.Message)) {
+            foreach (var commit in commits.GetConventionalCommits()) {
+                if (commit.HasBreakingChange) {
                     major = true;
                     break;
                 }
                 else if (minor) {
                     continue;
                 }
-                else if (CalcverSettings.MinorBumpRegex.IsMatch(commit.Message)) {
+                else if (commit.IsFeature) {
                     minor = true;
                 }
             }

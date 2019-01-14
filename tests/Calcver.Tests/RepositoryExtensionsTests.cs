@@ -25,7 +25,7 @@ namespace Calcver.Tests {
             var version = repository.GetVersion();
 
             // assert
-            version.Should().Be(lastTag.ParseSemanticVersion());
+            version.Should().Be(SemanticVersion.Parse(lastTag));
         }
 
         [Theory]
@@ -35,8 +35,9 @@ namespace Calcver.Tests {
         [InlineAutoNData("1.0.1", 5, "r01", "fix(module): something", "1.0.2-5.r01")]
         [InlineAutoNData("v1.0.1", 5, "r01", "chore: something", "1.0.2-5.r01")]
         [InlineAutoNData("v1.0.1", 5, "r01", "docs: something", "1.0.2-5.r01")]
-        [InlineAutoNData("v1.0.1", 5, "r01", "fix: something\nBREAKING CHANGE: something", "2.0.0-5.r01")]
-        [InlineAutoNData("v1.0.1", 5, "r01", "fix(module): something\nBREAKING CHANGE: something", "2.0.0-5.r01")]
+        [InlineAutoNData("v1.0.1", 5, "r01", "fix: something\n\nBREAKING CHANGE: something", "2.0.0-5.r01")]
+        [InlineAutoNData("v1.0.1", 5, "r01", "fix: something\n\nSOMEMESSAGE\nMESSAGELINE2\n\nBREAKING CHANGE: something", "2.0.0-5.r01")]
+        [InlineAutoNData("v1.0.1", 5, "r01", "fix(module): something\n\nBREAKING CHANGE: something", "2.0.0-5.r01")]
         public void GetVersion_WhenNoTag_ThenReturnPrerelease(
             string lastTag,
             int numCommits, // Assume > 0
@@ -52,7 +53,7 @@ namespace Calcver.Tests {
             var version = repository.GetVersion(new CalcverSettings { PrereleaseSuffix = buildNum });
 
             // assert
-            version.Should().Be(expected.ParseSemanticVersion());
+            version.Should().Be(SemanticVersion.Parse(expected));
         }
 
         [Theory]
@@ -86,7 +87,7 @@ namespace Calcver.Tests {
             var version = repository.GetVersion();
 
             // assert
-            version.Should().Be("0.0.0".ParseSemanticVersion());
+            version.Should().Be(SemanticVersion.Parse( "0.0.0"));
         }
 
         [Theory]

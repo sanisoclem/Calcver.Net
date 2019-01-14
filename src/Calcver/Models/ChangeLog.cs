@@ -6,6 +6,6 @@ namespace Calcver
     {
         public SemanticVersion Version { get; set; }
         public TagInfo Tag { get; set; } 
-        public List<ChangeEntry> Changes { get; set; } = new List<ChangeEntry>();
+        public List<ConventionalCommit> Changes { get; set; }
     }
 }

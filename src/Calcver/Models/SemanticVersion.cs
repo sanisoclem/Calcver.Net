@@ -1,10 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Calcver {
     public class SemanticVersion : IComparable<SemanticVersion>, IEquatable<SemanticVersion> {
         readonly string _toString;
+
+        private static Regex parseRegex = new Regex(@"^
+            \s*v?
+            ([0-9]|[1-9][0-9]+)       # major version
+            \.
+            ([0-9]|[1-9][0-9]+)       # minor version
+            \.
+            ([0-9]|[1-9][0-9]+)       # patch version
+            (\-([0-9A-Za-z\-\.]+))?   # pre-release version
+            (\+([0-9A-Za-z\-\.]+))?   # build metadata
+            \s*
+            $",
+            RegexOptions.IgnorePatternWhitespace);
+
+        public static SemanticVersion Parse(string input)
+        {
+            if (TryParse(input, out var version)) {
+                return version;
+            }
+            else {
+                throw new ArgumentException($"Invalid version string: {input}", nameof(input));
+            }
+        }
+        public static bool TryParse(string input, out SemanticVersion version)
+        {
+            version = null;
+
+            var match = parseRegex.Match(input);
+            if (!match.Success)
+                return false;
+
+            var major = int.Parse(match.Groups[1].Value);
+            var minor = int.Parse(match.Groups[2].Value);
+            var patch = int.Parse(match.Groups[3].Value);
+            string pre = null, meta = null;
+
+            if (match.Groups[4].Success) {
+                var inputPreRelease = match.Groups[5].Value;
+                var cleanedPreRelease = string.Join(".", inputPreRelease
+                    .Split('.')
+                    .Select(s => new { IsNumeric = int.TryParse(s, out var n), Number = n, String = s })
+                    .Select(s => s.IsNumeric ? s.Number.ToString() : s.String).ToArray());
+
+                if (inputPreRelease != cleanedPreRelease) {
+                    return false;
+                }
+                pre = cleanedPreRelease;
+            }
+
+            if (match.Groups[6].Success) {
+                meta = match.Groups[7].Value;
+            }
+            version = new SemanticVersion(major, minor, patch, pre, meta);
+            return true;
+        }
+
         public SemanticVersion(int major, int minor, int patch,
                     string preRelease = null, string meta = null)
         {
@@ -138,6 +195,5 @@ namespace Calcver {
             }
             return a.CompareTo(b) <= 0;
         }
-
     }
 }

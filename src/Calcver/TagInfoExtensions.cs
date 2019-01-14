@@ -5,16 +5,13 @@ namespace Calcver {
     public static class TagInfoExtensions {
         public static SemanticVersion GetVersion(this TagInfo tag)
         {
-            if (tag.Name.StartsWith("v") && tag.Name.Substring(1).TryParseSemanticVersion(out var version)) {
+            if (tag.Name.StartsWith("v") && SemanticVersion.TryParse(tag.Name.Substring(1), out var version)) {
                 return new SemanticVersion(version.Major, version.Minor, version.Patch, version.Prerelease, tag.Commit.ShortId());
             }
-            else if (tag.Name.TryParseSemanticVersion(out version)) {
+            else if (SemanticVersion.TryParse(tag.Name, out version)) {
                 return new SemanticVersion(version.Major, version.Minor, version.Patch, version.Prerelease, tag.Commit.ShortId());
             }
             return null;
         }
-
-        public static IEnumerable<(TagInfo, SemanticVersion)> FilterVersionTags(this IEnumerable<TagInfo> tags)
-            => tags.Select(t => (t, t.GetVersion())).Where(t => t.Item2 != null);
     }
 }
