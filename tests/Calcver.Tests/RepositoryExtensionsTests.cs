@@ -1,4 +1,5 @@
-﻿using Calcver.Tests.Helpers;
+﻿using AutoFixture;
+using Calcver.Tests.Helpers;
 using FluentAssertions;
 using NSubstitute;
 using System;
@@ -9,6 +10,23 @@ using Xunit;
 
 namespace Calcver.Tests {
     public class RepositoryExtensionsTests {
+        [Theory]
+        [ClassData(typeof(VersionCalculationTestData))]
+        public void GetVersion_Always_CalculateCorrectVersion(
+            string expectedVersion,
+            string history)
+        {
+            // arrange
+            var repository = Substitute.For<IRepository>();
+            repository.CreateHistory(history);
+
+            // act 
+            var version = repository.GetVersion();
+
+            // assert
+            version.Should().Be(SemanticVersion.Parse(expectedVersion));
+        }
+
         [Theory]
         [InlineAutoNData("1.0.0")]
         [InlineAutoNData("1.0.0-123")]
