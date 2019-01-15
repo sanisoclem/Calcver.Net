@@ -36,8 +36,9 @@ deploy:
     appveyor_repo_tag: true
     appveyor_repo_tag_name: /\d+\.\d+.\d+(-[a-zA-Z0-9]+)?/
 - provider: NuGet
+  server: https://ci.appveyor.com/nuget/sanisoclem-1hsskq6nn06g
   api_key:
-    secure: cdk1PHxgO0eToAllOUT1sqZdSDsjcOTTR2tNX9ro5+WwnFVIhPv/hUifBEzs4A2Q
+    secure: ovRAAP+pCt2eBZ5OoCKJaGh4vQbTUAZ8wnbsogY3sYw=
   skip_symbols: true
   on:
     branch: master
