@@ -1,4 +1,4 @@
-﻿using Calcver.Git.Cli.Commands;
+﻿using Calcver.Cli.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using P3.Konsole;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Calcver.Git.Cli {
+namespace Calcver.Cli {
     class Program {
         private static readonly IDictionary<string, string> SwitchMappings = new Dictionary<string, string>() {
         };
