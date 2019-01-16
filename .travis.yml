@@ -15,4 +15,4 @@ branches:
   only:
   - master
   - v*.*
-script: dotnet test ./tests/Calcver.Tests
+script: dotnet test

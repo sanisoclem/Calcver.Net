@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace Calcver.Git.Cli {
     class Program {
         private static readonly IDictionary<string, string> SwitchMappings = new Dictionary<string, string>() {
-
         };
         private static readonly IDictionary<string, string> DefaultConfiguration = new Dictionary<string, string>() {
             {"Serilog:WriteTo:0:Name","Console" },

@@ -8,10 +8,8 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Calcver.Tests
-{
-    public class SemanticVerionTests
-    {
+namespace Calcver.Tests {
+    public class SemanticVerionTests {
         [Theory]
         [InlineData("0.0.0", null, true)]
         [InlineData("1.0.0", "0.1.0", true)]
@@ -25,8 +23,8 @@ namespace Calcver.Tests
         public void GreaterLessThanOperator_ShouldReturnCorrectResults(
             string ver1,
             string ver2,
-            bool expected) {
-
+            bool expected)
+        {
             // arrange
             var v1 = ver1 == null ? null : SemanticVersion.Parse(ver1);
             var v2 = ver2 == null ? null : SemanticVersion.Parse(ver2);
@@ -46,10 +44,10 @@ namespace Calcver.Tests
         [InlineData("1.0.0-5", "1.0.0-5+meta")]
         public void EqualityOperatorsShouldReturnCorrectResults(
             string ver1,
-            string ver2) {
-
+            string ver2)
+        {
             // arrange
-            var v1 = ver1 == null ? null: SemanticVersion.Parse(ver1);
+            var v1 = ver1 == null ? null : SemanticVersion.Parse(ver1);
             var v2 = ver2 == null ? null : SemanticVersion.Parse(ver2);
 
             // act
@@ -66,7 +64,8 @@ namespace Calcver.Tests
         [InlineData("1.0.0-05")]
         [InlineData("123")]
         [InlineData("parseinvalid")]
-        public void Parse_WhenInvalid_ThenThrow(string version) {
+        public void Parse_WhenInvalid_ThenThrow(string version)
+        {
             // act
             Action action = () => SemanticVersion.Parse(version);
 
@@ -80,7 +79,8 @@ namespace Calcver.Tests
         [InlineData("1.0.0-05")]
         [InlineData("555")]
         [InlineData("tryparseinvalid")]
-        public void TryParse_WhenInvalid_ReturnFalse(string version) {
+        public void TryParse_WhenInvalid_ReturnFalse(string version)
+        {
             // act
             var result = SemanticVersion.TryParse(version, out _);
 
