@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "console", "examples\console
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calcver.Git.MsBuild", "src\Calcver.Git.MsBuild\Calcver.Git.MsBuild.csproj", "{F6ED1E25-78F4-4B66-9533-2D67F4A30CC3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calcver.Git.Cli", "src\Calcver.Git.Cli\Calcver.Git.Cli.csproj", "{E7F4A7EA-4447-4AD3-9980-DA6F1E0A5FDF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calcver.Cli", "src\Calcver.Cli\Calcver.Cli.csproj", "{E7F4A7EA-4447-4AD3-9980-DA6F1E0A5FDF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{53352E8D-C7A7-4038-96F0-2860C6522D94}"
 	ProjectSection(SolutionItems) = preProject
