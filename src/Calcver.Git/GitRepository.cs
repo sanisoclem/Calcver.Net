@@ -14,32 +14,33 @@ namespace Calcver.Git {
             _repo = new Repository(_root);
         }
         public string RootPath => _root;
+        public Repository Repository => _repo;
 
         public IEnumerable<CommitInfo> GetCommits(string since = null, string until = null)
         {
-            var filter = new CommitFilter();
+            var filter = new CommitFilter { SortBy = CommitSortStrategies.Reverse | CommitSortStrategies.Topological };
             if (since != null)
                 filter.ExcludeReachableFrom = _repo.Lookup(since);
             if (until != null)
                 filter.IncludeReachableFrom = _repo.Lookup(until);
 
             return _repo.Commits.QueryBy(filter)
-                .Select(c => ToCommitInfo(c));
+                .Select(c => new CommitInfo {
+                    Id = c.Sha,
+                    Message = c.Message
+                });
         }
 
         public IEnumerable<TagInfo> GetTags()
         {
-            return _repo.Tags.Select(t => new TagInfo {
-                Name = t.FriendlyName,
-                Commit = ToCommitInfo(_repo.Lookup(t.PeeledTarget.Sha) as Commit),
-            }).Reverse();
+            var commits = GetCommits();
+            return from com in commits
+                   join tag in _repo.Tags on com.Id equals tag.PeeledTarget.Sha
+                   select new TagInfo {
+                       Name = tag.FriendlyName,
+                       Commit = com
+                   };
         }
-
-        private static CommitInfo ToCommitInfo(Commit commit)
-         => commit == null ? null : new CommitInfo {
-             Id = commit.Sha,
-             Message = commit.Message
-         };
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

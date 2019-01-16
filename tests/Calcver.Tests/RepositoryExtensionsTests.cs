@@ -13,12 +13,13 @@ namespace Calcver.Tests {
         [Theory]
         [ClassData(typeof(VersionCalculationTestData))]
         public void GetVersion_Always_CalculateCorrectVersion(
+            string history,
             string expectedVersion,
-            string history)
+            string headCommit)
         {
             // arrange
             var repository = Substitute.For<IRepository>();
-            repository.CreateHistory(history);
+            repository.CreateHistory(history,headCommit);
 
             // act 
             var version = repository.GetVersion();

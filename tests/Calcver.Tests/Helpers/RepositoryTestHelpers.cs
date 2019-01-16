@@ -30,17 +30,17 @@ namespace Calcver.Tests.Helpers {
             return commits.LastOrDefault()?.Id ?? tagCommitId;
         }
 
-        public static string CreateHistory(this IRepository repo, string historyDescription)
+        public static string CreateHistory(this IRepository repo, string historyDescription, string headCommit)
         {
             // -- parse the history data
             var hist = historyDescription.Split("\n\r".ToCharArray(), StringSplitOptions.RemoveEmptyEntries) // split by lines
                 .Select(line => historyRegex.Match(line.Trim()))
-                .Select((r,i) => new {
+                .Select((r, i) => new {
                     Index = i,
                     Sha = r.Groups["sha"].Value,
                     Tag = r.Groups["tag"].Value,
                     Msg = r.Groups["msg"].Value
-                }).Reverse().ToList();
+                }).SkipWhile(c => c.Sha != headCommit).Reverse().ToList();
 
             // -- compute commits to return
             repo.GetCommits(Arg.Any<string>(), Arg.Any<string>()).Returns(c => {

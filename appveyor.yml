@@ -18,7 +18,7 @@ before_build:
 build_script:
 - ps: dotnet pack -c release /p:Version=$env:customnugetversion
 test_script:
-- cmd: OpenCover.Console.exe -register:user -oldstyle -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test -c debug --logger:trx;LogFileName=results.trx /p:DebugType=full tests/Calcver.Tests" -filter:"+[Calcver*]* -[Calcver.Tests*]*" -output:".\coverage.xml"
+- cmd: OpenCover.Console.exe -register:user -oldstyle -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test -c debug --logger:trx;LogFileName=results.trx /p:DebugType=full" -filter:"+[Calcver*]* -[Calcver.Tests*]*" -output:".\coverage.xml"
 - cmd: codecov -f .\coverage.xml -t "%CODECOV_TOKEN%"
 
 skip_branch_with_pr: true
