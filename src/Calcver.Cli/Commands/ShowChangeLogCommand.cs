@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Calcver.Git;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using P3.Konsole.Commands;
 using System;
@@ -9,13 +10,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Calcver.Git.Cli.Commands
+namespace Calcver.Cli.Commands
 {
-    public class VersionCommand : ICommand<string[]>
+    public class ShowChangeLogCommand : ICommand<string[]>
     {
         private readonly ILogger<ShowChangeLogCommand> _logger;
 
-        public VersionCommand(ILogger<ShowChangeLogCommand> logger) {
+        public ShowChangeLogCommand(ILogger<ShowChangeLogCommand> logger) {
             _logger = logger;
         }
 
@@ -23,11 +24,11 @@ namespace Calcver.Git.Cli.Commands
             var dir = parameter.Length > 0 ? parameter[0] : Directory.GetCurrentDirectory();
             var suff = parameter.Length > 1 ? parameter[1] : null;
             using (var repo = new GitRepository(dir)) {
-                var version = repo.GetVersion(new CalcverSettings {
+                var logs = repo.GetChangeLogs(new CalcverSettings {
                     PrereleaseSuffix = suff
                 });
 
-                Console.WriteLine(version);
+                Console.Write(JsonConvert.SerializeObject(logs));
             }
             return Task.CompletedTask;
         }
