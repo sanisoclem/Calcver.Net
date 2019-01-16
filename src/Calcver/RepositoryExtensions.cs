@@ -22,7 +22,7 @@ namespace Calcver {
             var includedCommits = repo.GetCommits(lastTag?.Name).ToList();
 
             if (includedCommits.Count == 0) {
-                return new SemanticVersion(lastStableVersion.Major, lastStableVersion.Minor, lastStableVersion.Patch, lastStableVersion.Prerelease, lastTag?.Commit.ShortId());
+                return new SemanticVersion(lastStableVersion, meta: lastTag?.Commit.ShortId());
             }
             else {
                 return lastStableVersion.CalculatePrereleaseVersion(includedCommits, settings?.PrereleaseSuffix);

@@ -58,16 +58,20 @@ namespace Calcver {
             if (match.Groups[6].Success) {
                 meta = match.Groups[7].Value;
             }
-            version = new SemanticVersion(major, minor, patch, pre, meta);
+            version = new SemanticVersion((major, minor, patch), pre, meta);
             return true;
         }
 
-        public SemanticVersion(int major, int minor, int patch,
+        public SemanticVersion(int major, int minor, int patch)
+            : this((major, minor, patch)) { }
+        public SemanticVersion(SemanticVersion stable, string preRelease = null, string meta = null)
+            : this((stable.Major, stable.Minor, stable.Patch), preRelease, meta) { }
+        public SemanticVersion((int major, int minor, int patch) stable,
                     string preRelease = null, string meta = null)
         {
-            Major = major;
-            Minor = minor;
-            Patch = patch;
+            Major = stable.major;
+            Minor = stable.minor;
+            Patch = stable.patch;
             Prerelease = preRelease;
             Metadata = meta;
 
@@ -88,13 +92,13 @@ namespace Calcver {
             => new SemanticVersion(Major, Minor, Patch);
 
         public SemanticVersion BumpMajor(string prerelease = null, string metadata = null)
-            => new SemanticVersion(Major + 1, 0, 0, prerelease, metadata);
+            => new SemanticVersion((Major + 1, 0, 0), prerelease, metadata);
 
         public SemanticVersion BumpMinor(string prerelease = null, string metadata = null)
-            => new SemanticVersion(Major, Minor + 1, 0, prerelease, metadata);
+            => new SemanticVersion((Major, Minor + 1, 0), prerelease, metadata);
 
         public SemanticVersion BumpPatch(string prerelease = null, string metadata = null)
-            => new SemanticVersion(Major, Minor, Patch + 1, prerelease, metadata);
+            => new SemanticVersion((Major, Minor, Patch + 1), prerelease, metadata);
 
         public override string ToString()
             => _toString;
