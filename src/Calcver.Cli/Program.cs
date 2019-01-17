@@ -33,9 +33,9 @@ namespace Calcver.Cli {
                   })
                     )
                 .ConfigureCommands((builder, config) => builder
-                    .DefineCommand<ShowChangeLogCommand>("log")
+                    .DefineCommand<ShowChangeLogCommand, ShowChangeLogCommandParameters>("log")
                     .DefineCommand<VersionCommand>("version")
-                    .DefineCatchAllCommand<ShowChangeLogCommand>())
+                    .DefineCatchAllCommand<ShowChangeLogCommand, ShowChangeLogCommandParameters>())
                 .Build();
 
             try {

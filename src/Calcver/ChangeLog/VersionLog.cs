@@ -2,7 +2,7 @@
 
 namespace Calcver
 {
-    public class ChangeLog
+    public class VersionLog
     {
         public SemanticVersion Version { get; set; }
         public TagInfo Tag { get; set; } 

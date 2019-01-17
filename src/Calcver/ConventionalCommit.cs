@@ -39,5 +39,6 @@ namespace Calcver {
 
         public bool HasBreakingChange => !string.IsNullOrEmpty(BreakingChange);
         public bool IsFeature => Type == "feat";
+        public bool IsFix => Type == "fix";
     }
 }
