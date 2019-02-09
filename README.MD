@@ -10,10 +10,10 @@ Automatic nuget library versioning using [semver2.0](https://semver.org/) and [c
 
 ## Build status
 
-| Build server | Platform     | Build status                                                                                                                                                  |
-|--------------|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| AppVeyor     | Windows      | [![Build status](https://ci.appveyor.com/api/projects/status/njuge4kx0tits5eo/branch/master?svg=true)](https://ci.appveyor.com/project/sanisoclem/calcver-net/branch/master) |
-| Travis       | Linux / OS X | [![Build Status](https://travis-ci.org/PotatoEngineering/Calcver.Net.svg?branch=master)](https://travis-ci.org/PotatoEngineering/Calcver.Net) |
+| Build server | Platform     | SDK Version | Build status                                                                                                                                                  |
+|--------------|--------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AppVeyor     | Windows      |           ? |[![Build status](https://ci.appveyor.com/api/projects/status/njuge4kx0tits5eo/branch/master?svg=true)](https://ci.appveyor.com/project/sanisoclem/calcver-net/branch/master) |
+| Travis       | Linux / OS X |     2.1.503 |[![Build Status](https://travis-ci.org/PotatoEngineering/Calcver.Net.svg?branch=master)](https://travis-ci.org/PotatoEngineering/Calcver.Net) |
 
 ## Nuget Packages
 
