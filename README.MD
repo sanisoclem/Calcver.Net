@@ -14,7 +14,7 @@ Automatic nuget library versioning using [semver2.0](https://semver.org/) and [c
 
 | Build server | Platform     | Build status                                                                                                                                                  |
 |--------------|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| AppVeyor     | Windows      | [![AppVeyor](https://img.shields.io/appveyor/ci/sanisoclem/calcver-net.svg?style=flat)](https://ci.appveyor.com/project/sanisoclem/calcver-net) |
+| AppVeyor     | Windows      | [![Build status](https://ci.appveyor.com/api/projects/status/njuge4kx0tits5eo/branch/master?svg=true)](https://ci.appveyor.com/project/sanisoclem/calcver-net/branch/master) |
 | Travis       | Linux / OS X | [![Build Status](https://travis-ci.org/PotatoEngineering/Calcver.Net.svg?branch=master)](https://travis-ci.org/PotatoEngineering/Calcver.Net) |
 
 ## Nuget Packages
@@ -38,7 +38,7 @@ Automatic nuget library versioning using [semver2.0](https://semver.org/) and [c
 $ dotnet tool install -g dotnet-calcver
 
 You can invoke the tool using the following command: dotnet-calcver
-Tool 'dotnet-calcver' (version '0.2.0') was successfully installed.
+Tool 'dotnet-calcver' (version 'x.x.x') was successfully installed.
 ```
 
 ### Install MsBuild Tasks

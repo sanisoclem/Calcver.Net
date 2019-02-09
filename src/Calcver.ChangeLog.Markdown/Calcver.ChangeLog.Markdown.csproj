@@ -5,11 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>Calcver</PackageId>
+    <PackageId>Calcver.ChangeLog.Markdown</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Markdig" Version="0.15.7" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <ProjectReference Include="..\Calcver\Calcver.csproj" />
   </ItemGroup>
 </Project>

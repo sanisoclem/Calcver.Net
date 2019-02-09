@@ -15,12 +15,14 @@ before_build:
 - ps: Update-AppveyorBuild -Version $env:customnugetversion
 - choco install opencover.portable
 - choco install codecov
+before_deploy:
+  - ps: dotnet "$env:APPVEYOR_BUILD_FOLDER\build\Calcver.Cli.dll" log --destination "$env:APPVEYOR_BUILD_FOLDER\changelog.md" --format markdown
+  - ps: ${env:release_description} = (Get-Content -LiteralPath "$env:APPVEYOR_BUILD_FOLDER\changelog.md" -Encoding UTF8) -join "`n";
 build_script:
 - ps: dotnet pack -c release /p:Version=$env:customnugetversion
 test_script:
 - cmd: OpenCover.Console.exe -register:user -oldstyle -target:"C:/Program Files/dotnet/dotnet.exe" -targetargs:"test -c debug --logger:trx;LogFileName=results.trx /p:DebugType=full" -filter:"+[Calcver*]* -[Calcver.Tests*]*" -output:".\coverage.xml"
 - cmd: codecov -f .\coverage.xml -t "%CODECOV_TOKEN%"
-
 skip_branch_with_pr: true
 nuget:
   disable_publish_on_pr: true
@@ -43,3 +45,12 @@ deploy:
   on:
     branch: master
     appveyor_repo_tag: false
+- provider: GitHub
+  description: $(release_description)
+  auth_token:
+    secure: 8q1/CSBx/+8Qt6PJF/C+Pb+oevfM8haQ7qiRyEZ41UFUUGhSjs1QFNDUZGt0Hs3a
+  artifact: /.*\.nupkg/
+  draft: true
+  on:
+    appveyor_repo_tag: true
+    appveyor_repo_tag_name: /\d+\.\d+.\d+(-[a-zA-Z0-9]+)?/

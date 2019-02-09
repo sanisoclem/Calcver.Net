@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Calcver.Tests {
+namespace Calcver.Tests.UnitTests {
     public class VersionCalculationTestData : TheoryData<string,string,string>{
         public VersionCalculationTestData()
         {

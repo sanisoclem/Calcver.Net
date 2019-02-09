@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Calcver.Tests {
+namespace Calcver.Tests.UnitTests {
     public class SemanticVerionTests {
         [Theory]
         [InlineData("0.0.0", null, true)]

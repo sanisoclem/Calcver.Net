@@ -25,12 +25,16 @@ namespace Calcver.Git {
                 filter.IncludeReachableFrom = _repo.Lookup(until);
 
             return _repo.Commits.QueryBy(filter)
-                .Select(c => new CommitInfo {
-                    Id = c.Sha,
-                    Message = c.Message
-                });
+                .Select(TranslateCommit);
         }
 
+        public TagInfo GetTag(string tagName)
+            => _repo.Tags.Where(t => t.FriendlyName == tagName)
+            .Select(t => new TagInfo {
+                Name = t.FriendlyName,
+                Commit = TranslateCommit((t.PeeledTarget as Commit))
+            }).SingleOrDefault();
+        
         public IEnumerable<TagInfo> GetTags()
         {
             var commits = GetCommits();
@@ -41,6 +45,12 @@ namespace Calcver.Git {
                        Commit = com
                    };
         }
+
+        private CommitInfo TranslateCommit(Commit commit)
+            => commit == null ? null : new CommitInfo {
+                Id = commit.Sha,
+                Message = commit.Message
+            };
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
