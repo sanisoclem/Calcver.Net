@@ -4,9 +4,7 @@
 [![CodeCov](https://img.shields.io/codecov/c/github/Potatoengineering/calcver.net.svg?logo=codecov&logoColor=%23fff&style=flat)](https://codecov.io/gh/PotatoEngineering/Calcver.Net)
 [![AppVeyorTests](https://img.shields.io/appveyor/tests/sanisoclem/calcver-net.svg?compact_message=true&style=flat&logo=appveyor)](https://ci.appveyor.com/project/sanisoclem/calcver-net/build/tests)
 [![Dependencies](https://img.shields.io/librariesio/github/PotatoEngineering/calcver.net.svg)](https://libraries.io/github/PotatoEngineering/Calcver.Net)
-
-![PreRelease](https://img.shields.io/nuget/vpre/Calcver.Git.svg?label=Prerelease)
-![Nuget Downloads](https://img.shields.io/nuget/dt/Calcver.Git.svg?)
+[![Nuget Downloads](https://img.shields.io/nuget/dt/Calcver.svg)](https://www.nuget.org/packages/calcver/)
 
 Automatic nuget library versioning using [semver2.0](https://semver.org/) and [conventional commits](https://www.conventionalcommits.org/)
 
