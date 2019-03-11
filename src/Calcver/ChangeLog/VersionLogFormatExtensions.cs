@@ -3,10 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Markdig.Syntax;
 using System.Threading.Tasks;
-using Markdig;
-using Markdig.Renderers.Normalize;
 using System.Linq;
 
 namespace Calcver.ChangeLog {
