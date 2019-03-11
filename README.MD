@@ -1,21 +1,19 @@
 # Calcver.NET
 
-[![CodeFactor](https://www.codefactor.io/repository/github/potatoengineering/calcver.net/badge)](https://www.codefactor.io/repository/github/potatoengineering/calcver.net)
-[![CodeCov](https://img.shields.io/codecov/c/github/Potatoengineering/calcver.net.svg?logo=codecov&logoColor=%23fff&style=flat)](https://codecov.io/gh/PotatoEngineering/Calcver.Net)
-[![AppVeyorTests](https://img.shields.io/appveyor/tests/sanisoclem/calcver-net.svg?compact_message=true&style=flat&logo=appveyor)](https://ci.appveyor.com/project/sanisoclem/calcver-net/build/tests)
-[![Dependencies](https://img.shields.io/librariesio/github/PotatoEngineering/calcver.net.svg)](https://libraries.io/github/PotatoEngineering/Calcver.Net)
-
-![PreRelease](https://img.shields.io/nuget/vpre/Calcver.Git.svg?label=Prerelease)
-![Nuget Downloads](https://img.shields.io/nuget/dt/Calcver.Git.svg?)
+[![CodeFactor](https://www.codefactor.io/repository/github/sanisoclem/calcver.net/badge)](https://www.codefactor.io/repository/github/sanisoclem/calcver.net)
+[![CodeCov](https://img.shields.io/codecov/c/github/sanisoclem/calcver.net.svg?logo=codecov&logoColor=%23fff&style=flat)](https://codecov.io/gh/sanisoclem/Calcver.Net)
+[![AppVeyorTests](https://img.shields.io/appveyor/tests/sanisoclem/calcver-net.svg?style=flat&logo=appveyor)](https://ci.appveyor.com/project/sanisoclem/calcver-net/build/tests)
+[![Dependencies](https://img.shields.io/librariesio/github/sanisoclem/calcver.net.svg)](https://libraries.io/github/sanisoclem/Calcver.Net)
+[![Nuget Downloads](https://img.shields.io/nuget/dt/Calcver.svg)](https://www.nuget.org/packages/calcver/)
 
 Automatic nuget library versioning using [semver2.0](https://semver.org/) and [conventional commits](https://www.conventionalcommits.org/)
 
 ## Build status
 
-| Build server | Platform     | Build status                                                                                                                                                  |
-|--------------|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| AppVeyor     | Windows      | [![Build status](https://ci.appveyor.com/api/projects/status/njuge4kx0tits5eo/branch/master?svg=true)](https://ci.appveyor.com/project/sanisoclem/calcver-net/branch/master) |
-| Travis       | Linux / OS X | [![Build Status](https://travis-ci.org/PotatoEngineering/Calcver.Net.svg?branch=master)](https://travis-ci.org/PotatoEngineering/Calcver.Net) |
+| Build server | Platform     | SDK Version | Build status                                                                                                                                                  |
+|--------------|--------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| AppVeyor     | Windows      |           ? |[![Build status](https://ci.appveyor.com/api/projects/status/njuge4kx0tits5eo/branch/master?svg=true)](https://ci.appveyor.com/project/sanisoclem/calcver-net/branch/master) |
+| Travis       | Linux / OS X |     2.1.503 |[![Build Status](https://travis-ci.org/sanisoclem/Calcver.Net.svg?branch=master)](https://travis-ci.org/sanisoclem/Calcver.Net) |
 
 ## Nuget Packages
 
