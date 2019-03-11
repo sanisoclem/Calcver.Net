@@ -12,9 +12,9 @@
     <Description>Automatic versions using conventional commits and semver2.0</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>versioning, semver, conventional commits</PackageTags>
-    <PackageLicense>https://github.com/organizations/PotatoEngineering/Calver.Net/blob/master/LICENSE</PackageLicense>
-    <PackageProjectUrl>https://github.com/organizations/PotatoEngineering/Calver.Net</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/organizations/PotatoEngineering/Calver.Net/releases</PackageReleaseNotes>
+    <PackageLicense>https://github.com/organizations/sanisoclem/Calver.Net/blob/master/LICENSE</PackageLicense>
+    <PackageProjectUrl>https://github.com/organizations/sanisoclem/Calver.Net</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/organizations/sanisoclem/Calver.Net/releases</PackageReleaseNotes>
     <PackageOutputPath>$(MSBuildThisFileDirectory)..\build</PackageOutputPath>
   </PropertyGroup>
 </Project>
